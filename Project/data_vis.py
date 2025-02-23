@@ -2,7 +2,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-from sklearn.utils import shuffle
+
 
 # Load the data
 df = pd.read_csv('Project/training_data_vt2025.csv')
@@ -71,6 +71,36 @@ plt.title('Increase stock vs temperature and dew')
 plt.xlabel('Temperature')
 plt.ylabel('Dew')
 
+fig = plt.figure(10)
+sns.countplot(data=df, x='snow', hue='increase_stock', hue_order=['low_bike_demand', 'high_bike_demand'])
+plt.title('Increase stock vs snow')
+plt.xlabel('Snow')
+
+fig = plt.figure(11)
+sns.countplot(data=df, x='precip', hue='increase_stock', hue_order=['low_bike_demand', 'high_bike_demand'])
+plt.title('Increase stock vs precipitation')
+plt.xlabel('Precipitation')
+
+fig = plt.figure(12)
+sns.countplot(data=df, x='snowdepth', hue='increase_stock', hue_order=['low_bike_demand', 'high_bike_demand'])
+plt.title('Increase stock vs snowdepth')
+plt.xlabel('Snowdepth')
+
+fig = plt.figure(13)
+sns.countplot(data=df, x='windspeed', hue='increase_stock', hue_order=['low_bike_demand', 'high_bike_demand'])
+plt.title('Increase stock vs windspeed')
+plt.xlabel('Windspeed')
+
+fig = plt.figure(14)
+sns.countplot(data=df, x='cloudcover', hue='increase_stock', hue_order=['low_bike_demand', 'high_bike_demand'])
+plt.title('Increase stock vs cloudover')
+plt.xlabel('Cloudover')
+
+fig = plt.figure(15)
+sns.countplot(data=df, x='visibility', hue='increase_stock', hue_order=['low_bike_demand', 'high_bike_demand'])
+plt.title('Increase stock vs visibility')
+plt.xlabel('Visibility')
+
 # Percentage of high demand holidays/non-holidays to number of holidays
 num_holidays = df['holiday'].sum()
 num_non_holidays = len(df) - num_holidays
@@ -88,7 +118,7 @@ num_non_weekdays = len(df) - num_holidays
 num_high_demand_weekdays = df[(df['weekday'] == 1) & (df['increase_stock'] == 'high_bike_demand')].shape[0]
 num_high_demand_non_weekdays = df[(df['weekday'] == 0) & (df['increase_stock'] == 'high_bike_demand')].shape[0]
 
-print(f'Percantage of high demand weekdays to number of holidays {num_high_demand_weekdays/num_weekdays*100:.2f}%')
+print(f'Percantage of high demand weekdays to number of weekdays {num_high_demand_weekdays/num_weekdays*100:.2f}%')
 print(f'Percantage of high demand non-weekdays to number of non-weekdays {num_high_demand_non_weekdays/num_non_weekdays*100:.2f}%')
 
 plt.show()
