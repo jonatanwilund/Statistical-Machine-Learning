@@ -5,13 +5,13 @@ import sklearn.metrics as sklm
 import seaborn as sns
 import matplotlib.pyplot as plt
 from sklearn.utils import shuffle
-from sklearn.model_selection import train_test_split, GridSearchCV
+from sklearn.model_selection import train_test_split, GridSearchCV, validation_curve
 from sklearn.metrics import accuracy_score, confusion_matrix
 
 df = pd.read_csv('Project/training_data_vt2025.csv')
 df['increase_stock'] = df['increase_stock'].apply(lambda x: 1 if x == 'high_bike_demand' else 0)
 
-training_data, test_data = train_test_split(df , test_size=0.3, random_state=42)
+training_data, test_data = train_test_split(df , test_size=0.3, random_state=50)
 
 def data_k_fold(df, k_fold):
     # Split the data into k folds
@@ -95,3 +95,19 @@ print(confmatrix)
 print('Accuracy score:')
 print(f'{100*accuracy} %')
 print('---------------------------------------------')
+
+# Validation curve
+train_scores, valid_scores = validation_curve(
+    model, training_data[columns], training_data['increase_stock'],
+    param_name='n_neighbors', param_range=list(range(5, 151)), cv=10, scoring='accuracy'
+)
+
+# Plot validation curve
+plt.figure()
+plt.plot(range(5, 151), np.mean(train_scores, axis=1), label='Training score')
+plt.plot(range(5, 151), np.mean(valid_scores, axis=1), label='Validation score')
+plt.title('Validation Curve with KNN')
+plt.xlabel('Number of Neighbors')
+plt.ylabel('Accuracy')
+plt.legend(loc='best')
+plt.show()
